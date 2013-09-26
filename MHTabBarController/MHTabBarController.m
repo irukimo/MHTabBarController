@@ -167,6 +167,7 @@ static const NSInteger TagOffset = 1000;
 	NSAssert([newViewControllers count] >= 2, @"MHTabBarController requires at least two view controllers");
 
 	UIViewController *oldSelectedViewController = self.selectedViewController;
+    
 
 	// Remove the old child view controllers.
 	for (UIViewController *viewController in _viewControllers)
@@ -186,6 +187,8 @@ static const NSInteger TagOffset = 1000;
 		_selectedIndex = newIndex;
 	else
 		_selectedIndex = 0;
+    
+    
 
 	// Add the new child view controllers.
 	for (UIViewController *viewController in _viewControllers)
@@ -207,12 +210,17 @@ static const NSInteger TagOffset = 1000;
 {
 	NSAssert(newSelectedIndex < [self.viewControllers count], @"View controller index out of bounds");
 
+    
+    
+    
 	if ([self.delegate respondsToSelector:@selector(mh_tabBarController:shouldSelectViewController:atIndex:)])
 	{
 		UIViewController *toViewController = (self.viewControllers)[newSelectedIndex];
 		if (![self.delegate mh_tabBarController:self shouldSelectViewController:toViewController atIndex:newSelectedIndex])
 			return;
 	}
+    
+    
 
 	if (![self isViewLoaded])
 	{
@@ -239,8 +247,42 @@ static const NSInteger TagOffset = 1000;
 			toButton = (UIButton *)[tabButtonsContainerView viewWithTag:TagOffset + _selectedIndex];
 			[self selectTabButton:toButton];
 			toViewController = self.selectedViewController;
-		}
+            
+            NSLog(@"herehere?????", oldSelectedIndex);
+            NSLog(@"title now?? %@", toViewController.title);
+            
+            toViewController.tabBarItem.image = [UIImage imageNamed:@"hoton"];
+            //UIImageView *thisImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"loveon"]];
+            
+            //[self.selectedViewController setView:thisImageView];
+            
+            
+            if(newSelectedIndex == 0){
+                toViewController.tabBarItem.image = [UIImage imageNamed:@"hoton"];
+            }
+            else if(newSelectedIndex == 1){
+                toViewController.tabBarItem.image = [UIImage imageNamed:@"nearon"];
+            }
+            else{
+                toViewController.tabBarItem.image = [UIImage imageNamed:@"loveon"];
+            }
+		
+        
+        }
+        
+        NSLog(@"Old selected index %d", oldSelectedIndex);
+        if(oldSelectedIndex == 0){
+            fromViewController.tabBarItem.image = [UIImage imageNamed:@"hotoff"];
+        }
+        else if(oldSelectedIndex == 1){
+            fromViewController.tabBarItem.image = [UIImage imageNamed:@"nearoff"];
+        }
+        else{
+            fromViewController.tabBarItem.image = [UIImage imageNamed:@"loveoff"];
+        }
+        
 
+        
 		if (toViewController == nil)  // don't animate
 		{
 			[fromViewController.view removeFromSuperview];
@@ -334,7 +376,7 @@ static const NSInteger TagOffset = 1000;
 {
 	[button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
 
-	UIImage *image = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+	UIImage *image = [[UIImage imageNamed:@"tabbackground"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
 	[button setBackgroundImage:image forState:UIControlStateNormal];
 	[button setBackgroundImage:image forState:UIControlStateHighlighted];
 	
@@ -346,7 +388,7 @@ static const NSInteger TagOffset = 1000;
 {
 	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
-	UIImage *image = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+	UIImage *image = [[UIImage imageNamed:@"tabbackground"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
 	[button setBackgroundImage:image forState:UIControlStateNormal];
 	[button setBackgroundImage:image forState:UIControlStateHighlighted];
 
